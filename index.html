@@ -1,0 +1,209 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Valentine ❤️</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 2.4em;
+    }
+
+    .name {
+      font-size: 2em;
+      color: #ff1e4d;
+      animation: glow 2s ease-in-out infinite, floatName 4s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 5px #ff4d6d; }
+      50% { text-shadow: 0 0 20px #ff1e4d; }
+    }
+
+    @keyframes floatName {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    input, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 15px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    button {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 1em;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background: #ff1e4d;
+    }
+
+    .final {
+      display: none;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    #noBtn {
+      position: absolute;
+    }
+
+    .burst-heart {
+      position: absolute;
+      font-size: 18px;
+      animation: burst 1s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes burst {
+      0% { transform: scale(1) translate(0,0); opacity: 1; }
+      100% { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      animation: float 6s infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-800px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>💘 A Little Question For You 💘</h1>
+
+<div class="card">
+  <input type="file" accept="image/*" id="photoInput">
+  <img id="photoPreview">
+
+  <input type="text" id="herName" placeholder="Enter her name 💕">
+
+  <textarea id="message" placeholder="Write your cute message here..."></textarea>
+
+  <input type="file" accept="audio/*" id="musicInput">
+  <audio id="music"></audio>
+  <button onclick="toggleMusic()">🎵 Play / Pause Music</button>
+
+  <button onclick="showValentine()">Click Me ❤️</button>
+
+  <div class="final" id="final">
+    <h2 class="name" id="nameDisplay"></h2>
+    <h3>Will you be my Valentine? 💖</h3>
+    <p id="finalMessage"></p>
+
+    <button onclick="yesAnswer(event)">YES 💕</button>
+    <button id="noBtn">NO 🙈</button>
+  </div>
+</div>
+
+<script>
+  const photoInput = document.getElementById("photoInput");
+  const preview = document.getElementById("photoPreview");
+  const musicInput = document.getElementById("musicInput");
+  const music = document.getElementById("music");
+  const noBtn = document.getElementById("noBtn");
+
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = "block";
+    }
+  });
+
+  musicInput.addEventListener("change", () => {
+    const file = musicInput.files[0];
+    if (file) {
+      music.src = URL.createObjectURL(file);
+      music.play();
+    }
+  });
+
+  function toggleMusic() {
+    music.paused ? music.play() : music.pause();
+  }
+
+  function showValentine() {
+    document.getElementById("final").style.display = "block";
+    document.getElementById("finalMessage").innerText =
+      document.getElementById("message").value;
+
+    document.getElementById("nameDisplay").innerText =
+      document.getElementById("herName").value;
+  }
+
+  function yesAnswer(e) {
+    const btn = e.target;
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement("div");
+      heart.className = "burst-heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = btn.offsetLeft + 30 + "px";
+      heart.style.top = btn.offsetTop + 10 + "px";
+      heart.style.setProperty("--x", (Math.random() * 200 - 100) + "px");
+      heart.style.setProperty("--y", (Math.random() * -200) + "px");
+      btn.parentElement.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    }
+    alert("She said YES 😍💍❤️");
+  }
+
+  noBtn.addEventListener("mouseover", () => {
+    noBtn.style.left = Math.random() * 250 + "px";
+    noBtn.style.top = Math.random() * 200 + "px";
+  });
+
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 300);
+</script>
+
+</body>
+</html
