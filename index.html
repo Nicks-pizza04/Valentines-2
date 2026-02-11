@@ -1,1 +1,45 @@
-<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Personalized Valentine Website</title>\n    <script>\n        function saveData() {\n            const name = document.getElementById('name').value;\n            const message = document.getElementById('message').value;\n            const photo = document.getElementById('photo').files[0];\n            const music = document.getElementById('music').files[0];\n\n            if (name && message && photo && music) {\n                localStorage.setItem('valentineName', name);\n                localStorage.setItem('valentineMessage', message);\n                localStorage.setItem('valentinePhoto', URL.createObjectURL(photo));\n                localStorage.setItem('valentineMusic', URL.createObjectURL(music));\n                alert('Data saved!\n\nShare this link: ' + window.location.href);\n            } else {\n                alert('Please fill all fields!');\n            }\n        }\n\n        function displayData() {\n            const name = localStorage.getItem('valentineName');\n            const message = localStorage.getItem('valentineMessage');\n            const photo = localStorage.getItem('valentinePhoto');\n            const music = localStorage.getItem('valentineMusic');\n\n            if (name) {\n                document.getElementById('displayName').innerText = 'From: ' + name;\n            }\n            if (message) {\n                document.getElementById('displayMessage').innerText = message;\n            }\n            if (photo) {\n                document.getElementById('displayPhoto').src = photo;\n            }\n            if (music) {\n                const audio = document.getElementById('audio');\n                audio.src = music;\n                audio.play();\n            }\n        }\n\n        window.onload = displayData;\n    <\/script>\n</head>\n<body>\n    <h1>Send a Personalized Valentine!</h1>\n    <div>\n        <label for=\"name\">Your Name:</label>\n        <input type=\"text\" id=\"name\" required>\n    </div>\n    <div>\n        <label for=\"message\">Your Message:</label>\n        <textarea id=\"message\" required></textarea>\n    </div>\n    <div>\n        <label for=\"photo\">Upload a Photo:</label>\n        <input type=\"file\" id=\"photo\" accept=\"image/*\" required>\n    </div>\n    <div>\n        <label for=\"music\">Upload Music:</label>\n        <input type=\"file\" id=\"music\" accept=\"audio/*\" required>\n    </div>\n    <button onclick=\"saveData()\">Create Website</button>\n    <h2>Your Valentine:</h2>\n    <div>\n        <p id=\"displayName\"></p>\n        <p id=\"displayMessage\"></p>\n        <img id=\"displayPhoto\" alt=\"Valentine Photo\" style=\"max-width: 300px;\">\n        <audio id=\"audio\" controls>\n            <source src=\"\" type=\"audio/mpeg\">\n            Your browser does not support the audio element.\n        </audio>\n    </div>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentines Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Happy Valentine's Day!</h1>
+    </header>
+    <main>
+        <input type="file" id="fileInput" accept="image/*" />
+        <div id="imgContainer"></div>
+    </main>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgContainer = document.getElementById('imgContainer');
+                    imgContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" />`;
+                    saveToLocalStorage('uploadedImage', e.target.result);
+                };
+                reader.onerror = function() {
+                    console.error('Error reading file');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                console.error('No file selected');
+            }
+        });
+
+        function saveToLocalStorage(key, value) {
+            try {
+                localStorage.setItem(key, value);
+            } catch (e) {
+                console.error('Error saving to localStorage', e);
+            }
+        }
+    </script>
+</body>
+</html>
